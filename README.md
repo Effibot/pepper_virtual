@@ -3,14 +3,13 @@ Virtual Pepper Gazebo Simulation
 
 **Table of contents:**
 
-[Installation](#installation)
++ [Installation](#installation)
 
-[Running the simulation](#running-the-simulation)
++ [Running the simulation](#running-the-simulation)
+  + [Driving Pepper](#driving-pepper-in-simulation)
+  + [RVIZ](#rviz)
 
-+ [Driving Pepper](#driving-pepper-in-simulation)
-+ [RVIZ](#rviz)
-
-[Notes from the original README](#notes-from-the-original-readme)
++ [Notes from the original README](#notes-from-the-original-readme)
 
 
 
