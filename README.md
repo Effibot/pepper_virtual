@@ -22,7 +22,7 @@ Main contribution in this repo is a Dockerfile that completely streamlines the i
 Simply build a container from the provided Dockerfile. Thus, if you don't have it, [install Docker](https://docs.docker.com/engine/install/ubuntu/).
 
 1. Clone the repo: `git clone https://github.com/frietz58/pepper_virtual `
-2. CD into repo: `cd pepper virtual`
+2. CD into repo: `cd pepper_virtual`
 3. Build image from provided Dockerfile: `sudo docker build -t awesome-pepper-sim .`
 
 That's it. You can now start Docker containers based on the image and run the simulation, see [Running the simulation](#runnign-the-simulation)
