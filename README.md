@@ -15,7 +15,7 @@ Virtual Pepper Gazebo Simulation
 
 Forked from [here](https://github.com/awesomebytes/pepper_virtual). Massive thanks to [Sam Pfeiffer](https://github.com/awesomebytes) for doing the heavy lifting and addressing the absolute mess that is Pepper's ROS simulation.
 
-Main contribution in this repo is a Dockerfile that completely streamlines the installation and fixes some missing steps, as well as some additional code snippets.
+Main contribution in this repo is a Dockerfile that completely streamlines the installation and fixes some missing steps (namely the installation of Pepper Meshes), as well as some additional code snippets.
 
 ## Installation
 
