@@ -19,7 +19,7 @@ Main contribution in this repo is a Dockerfile that completely streamlines the i
 
 ## Installation
 
-Simply build a container from the provided Dockerfile. Thus, if you don't have it, [install Docker](https://docs.docker.com/engine/install/ubuntu/).
+Simply build a container from the provided Dockerfile. Thus, if you don't have it, [install Docker](https://docs.docker.com/engine/install/ubuntu/) first. Then:
 
 1. Clone the repo: `git clone https://github.com/frietz58/pepper_virtual `
 2. CD into repo: `cd pepper_virtual`
@@ -31,11 +31,11 @@ That's it. You can now start Docker containers based on the image and run the si
 
 ## Running the simulation
 
-Because we want to spawn GUIs from our containers, we need to allow Docker to open GUIs on the surrounding OS. Thus, before starting the conainter, run: `xhost +local:root`. More on this [here](https://riptutorial.com/docker/example/21831/running-gui-apps-in-a-linux-container).
+Because we want to spawn GUIs from our containers, we need to allow Docker to open GUIs on the surrounding OS. Thus, before starting the container, run: `xhost +local:root`. More on this [here](https://riptutorial.com/docker/example/21831/running-gui-apps-in-a-linux-container).
 
 1. Start a container from the image: `sudo docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY awesome-pepper-sim`
 2. In the container, source the catkin workspace that was build during the building process of the Dockerfile: `source /catkin_ws/devel/setup.bash`
-3. Start Gazebo simulation based: `roslaunch pepper_gazebo_plugin pepper_gazebo_plugin_in_office_CPU.launch`
+3. Start Gazebo simulation: `roslaunch pepper_gazebo_plugin pepper_gazebo_plugin_in_office_CPU.launch`
 
 This should give you something similar to this:
 
@@ -61,11 +61,11 @@ You should now have something similar to this:
 
 ### RVIZ
 
-You can visualize the model and topics in RVIZ. However, I found that adding trying th add any of the camera topics to RVIZ crashes the gazebo simulation... However, other topics work fine. 
+You can visualize the model and topics in RVIZ. However, I found that trying to add any of the camera topics to RVIZ crashes the gazebo simulation... However, other topics work fine. 
 
 1. Attach a new session as described in the previous step and source both the entrypoint and the workspace. 
 2. Start RVIZ: `rosrun rviz rviz`
-3. Fix the global fixed frame! RVIZ expects a map, but per default, there is non. Set `Fixed Frame` in the `Global Options` to to `base_footprint`, to have everything be displayed relative to Pepper's base!
+3. Fix the global fixed frame! RVIZ expects a map, but per default, there is none. Set `Fixed Frame` in the `Global Options` to `base_footprint`, to have everything be displayed relative to Pepper's base!
 4. Add the desired topics in the RVIZ GUI, for example `Add` --> `by topic` --> `pepper/laser_2/LaserScan`
 
 After adding multiple topics, you should have something similar to this:
