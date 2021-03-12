@@ -77,7 +77,7 @@ After adding multiple topics, you should have something similar to this:
 
 
 
-### Gmapping
+## Gmapping
 
 Map update is still very slow, not sure why the `map_update_interval` param isn't doing anything. Also not sue why the `_` underscore must be inserted before the parameter. But this solves the error we get otherwise: https://answers.ros.org/question/272752/how-to-pass-a-parameter-of-type-double-as-an-input-to-a-roscpp-node/
 
@@ -97,6 +97,9 @@ This should give you something like this:
 3. Save map: `rosrun map_server map_saver -f pepper_office_map`
 4. Export map out of container (or persist it by commiting the current container state): `sudo docker cp <CONTAINER-ID>:/pepper_office_map.pgm .`
 
+
+## AMCL Navigation
+`rosrun amcl amcl scan:=/pepper/laser_2 _transform_tolerance:=1.0 _base_frame_id:=base_footprint`
 
 
 ## Notes from the original README

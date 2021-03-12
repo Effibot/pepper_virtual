@@ -8,7 +8,7 @@ RUN apt-get update
 RUN apt-get install -y vim wget libprotobuf-dev protobuf-compiler
 
 # packages required for Pepper Gazebo simulation
-RUN apt-get install -y ros-kinetic-tf2-sensor-msgs ros-kinetic-ros-control ros-kinetic-ros-controllers ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-control ros-kinetic-gazebo-plugins ros-kinetic-controller-manager ros-kinetic-ddynamic-reconfigure-python ros-kinetic-gmapping ros-kinetic-map-server 
+RUN apt-get install -y ros-kinetic-tf2-sensor-msgs ros-kinetic-ros-control ros-kinetic-ros-controllers ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-control ros-kinetic-gazebo-plugins ros-kinetic-controller-manager ros-kinetic-ddynamic-reconfigure-python ros-kinetic-gmapping ros-kinetic-map-server ros-kinetic-amcl 
 
 # install pepper meshes. We have to pipe this into 'yes' to agree to the license. otherwise docker build get's stuck on this step...
 # we also have these debian environment params, otherwise the yes still gets stuck on the prompt in the mesh installation
