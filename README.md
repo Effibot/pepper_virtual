@@ -15,6 +15,8 @@ Main contribution in this repo is a Dockerfile that streamlines the installation
   + [Driving Pepper](#driving-pepper-in-simulation)
   + [RVIZ](#rviz)
 + [Gmapping](#gmapping)
+
++ [AMCL Localization](#amcl-localization)
   
 + [Notes from the original README](#notes-from-the-original-readme)
 
