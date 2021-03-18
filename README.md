@@ -99,6 +99,8 @@ This should give you something like this:
 
 
 ## AMCL Navigation
+`rosrun map_server map_server saved_maps/pepper_office_map.yaml` 
+
 `rosrun amcl amcl scan:=/pepper/laser_2 _transform_tolerance:=1.0 _base_frame_id:=base_footprint`
 
 
