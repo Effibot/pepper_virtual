@@ -114,7 +114,7 @@ AMCL is a localization package that, given a map and laser data, localizes a rob
 Now, in RVIZ, you should have something similar to this:
 ![](imgs/init_localization.png)
 
-Alternatively, you can give amcl a prior for the particle distribution via RVIZ. For this, first set the fixed frame to map (we can do this because amcl provide the transform), then, use the  "2D Pose Estimation" button in RVIZ's tool panel. The result is a less evenly spread out initialization, which converges to the true robot position faster:
+Alternatively, you can give amcl a prior for the particle distribution via RVIZ. For this, first set the **fixed frame** to `map` (we can do this because amcl provide the transform), then, use the  `2D Pose Estimate` button in RVIZ's tool panel. The result is a less evenly spread out initialization, which converges to the true robot position faster:
 ![](imgs/2d_pose_estimate.png)
 
 AMCL has to accumulate a history of laser measurements to accurately estimate the position of the robot on the map. Thus, simply drive around the environment and let amcl collect data. TODO: link between RVIZ and AMLC seems to be not there yet, investigate this! 
