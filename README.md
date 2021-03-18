@@ -45,7 +45,9 @@ This should give you something similar to this:
 
 ![](imgs/gazebo_screenshot.png)
 
+If gazebo doesn't start and crashes with exit code `134`, something is wrong with the xhost setting on your system and docker can't open containers. Did you run `xhost +local:root` before starting the container?
 
+If gazebo doesn't start and crahes with exit code `139`, see the troubleshooting section below...
 
 ### Driving Pepper in simulation
 
@@ -120,4 +122,15 @@ And further variants that don't have the arms of the robot which reduce CPU load
 
 
 You'll find a topic `/pepper/laser_2` that unifies the 3 lasers of the robot in 1 topic (by reprojecting the points in a pointcloud and transforming them into `base_footprint`).
+
+
+## Troubleshooting
+
+#### Gazebo exit code 139 and NVIDIA drivers
+I started encountering this error after updating my nvidia-drivers and installing CUDA on my system. For some reason, with new nvidia-drivers installed, I could no longer spawn any GUIsfrom inside docker, even after applying the `xhost +local:root` fix. I can not further pinpoint why installing CUDA appears to have this side-effect, but I am very certain that this is the cause of the issue. The only way I was able to fix this was by installing the `rocker` docker extension. Install it from [here](https://github.com/osrf/rocker). Note, that it requires `nvidia-docker` to be installed PLUS a supported NVIDIA driver version, which solidifies my assumption that something fishy is going on with docker GUIs and NVIDIA drivers...
+Once you've installed `rocker`, start our the container using `rocker` instead of `docker`, like this: `sudo rocker --nvidia --x11 awesome-pepper-sim`
+
+Now, you should be able to spawn GUIs from inside the docker container, even when you have CUDA installed.
+
+
 
