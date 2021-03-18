@@ -100,11 +100,24 @@ This should give you something like this:
 4. Export map out of container (or persist it by commiting the current container state): `sudo docker cp <CONTAINER-ID>:/pepper_office_map.pgm .`
 
 
-## AMCL Navigation
-`rosrun map_server map_server saved_maps/pepper_office_map.yaml` 
+## AMCL Localization
+1. Start simulation as usual: `roslaunch pepper_gazebo_plugin pepper_gazebo_plugin_in_office_CPU.launch`
+2. Make previously created map available to localization algorithm via `map_server`: `rosrun map_server map_server saved_maps/pepper_office_map.yaml` 
+3. Start `amcl` node: `rosrun amcl amcl scan:=/pepper/laser_2 _transform_tolerance:=1.0 _base_frame_id:=base_footprint`
+4. Optionally (but recommended) setup RVIZ to monitor localization: `rosrun rviz rviz`. Set fixed frame to `base_footprint`
+ Add topics `/map` (the map we publish via map_server), `/amcl_pose` (the pose of the robot, estimated on the map, based on laser data), `/particle_cloud` (all particle locations used in amcl particle filter, useful for estimating accuracy of pose). 
+5. Initialize localization: `rosservice call global_localization` (service is provided by amcl)
+Now, in RVIZ, you should have something similar to this:
 
-`rosrun amcl amcl scan:=/pepper/laser_2 _transform_tolerance:=1.0 _base_frame_id:=base_footprint`
+![](imgs/init_localization.png)
 
+AMCL has to accumulate a history of laser measurements to accurately estimate the position of the robot on the map. Thus, simply drive around the environment and let amcl collect data. TODO: link between RVIZ and AMLC seems to be not there yet, investigate this! 
+6. Bringup `rqt_steering` or other drive controller: `rosrun rqt_robot_steering rqt_robot_steering --default_topic:=/pepper/cmd_vel`
+
+After a while, amcl localization should converge, depending on the unambiguity of the laser data in the environemnt, yielding something close to the this:
+
+
+![](imgs/amcl_convergence.png)
 
 ## Notes from the original README
 
