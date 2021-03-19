@@ -3,7 +3,8 @@ Virtual Pepper Gazebo Simulation
 
 Forked from [here](https://github.com/awesomebytes/pepper_virtual). Massive thanks to [Sam Pfeiffer](https://github.com/awesomebytes) for doing the heavy lifting and addressing the mess that is Pepper's ROS simulation.
 
-Main contribution in this repo is a Dockerfile that streamlines the installation and fixes some missing steps (namely the installation of Pepper Meshes). Further, I hope to implement a complete SLAM + navigation stack in this repo, which is not the goal in the original repository.
+Main contribution in this repo is a Dockerfile that streamlines the installation and fixes some missing steps (namely the installation of Pepper Meshes). 
+Further, in this repo, I've implemented the complete navigation stack for Pepper in ROS, meaning mapping (gmapping), localization (amcl) and path planning (move_base).
 
 
 
@@ -16,7 +17,7 @@ Main contribution in this repo is a Dockerfile that streamlines the installation
   + [RVIZ](#rviz)
 + [Gmapping](#gmapping)
 
-+ [AMCL Localization](#amcl-localization)
++ [AMCL localization](#amcl-localization)
 
 + [move_base navigation](#move_base-navigation)
   
@@ -38,7 +39,7 @@ That's it. You can now start Docker containers based on the image and run the si
 
 ## Running the simulation
 
-Because we want to spawn GUIs from our containers, we need to allow Docker to open GUIs on the surrounding OS. Thus, before starting the container, run: `xhost +local:root`. More on this [here](https://riptutorial.com/docker/example/21831/running-gui-apps-in-a-linux-container).
+Because we want to spawn GUIs from our containers, we need to allow Docker to open GUIs on the surrounding OS. Thus, before starting the container, run: `xhost +local:root`. More on this [here](https://riptutorial.com/docker/example/21831/running-gui-apps-in-a-linux-container). Alternatively  you can consider installing the Docker extension [rocker](https://github.com/osrf/rocker), which takes care of this problem and similar other ones.
 
 1. Start a container from the image: `sudo docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY awesome-pepper-sim`
 
@@ -103,7 +104,7 @@ This should give you something like this:
 
 
 ## AMCL Localization
-AMCL is a localization package that, given a map and laser data, localizes a robot on the given map via a particle filter. For ROS, this means that AMCL provide the transformation between the robot's transformation base frame and the map! Without this transformation, the robot would not be able to interact with the map, because it does not know its relation to the map...
+[AMCL](http://wiki.ros.org/amcl) is a localization package that, given a map and laser data, localizes a robot on the given map via a particle filter. For ROS, this means that AMCL provide the transformation between the robot's transformation base frame and the map! Without this transformation, the robot would not be able to interact with the map, because it does not know its relation to the map...
 
 1. Start simulation as usual: `roslaunch pepper_gazebo_plugin pepper_gazebo_plugin_in_office_CPU.launch`
 2. Make previously created map available to localization algorithm via map_server: `rosrun map_server map_server saved_maps/pepper_office_map.yaml` 
@@ -118,7 +119,7 @@ Alternatively, you can give amcl a prior for the particle distribution via RVIZ.
 ![](imgs/amcl_convergence.png)
 
 ## move_base navigation
-move_base generates a path based on the location of the robot on the map and a goal on the map. Configuring move base requires a lot of parameters, which is not practial to maintain in one command (configuration explained [here](http://wiki.ros.org/navigation/Tutorials/RobotSetup)). As such, the configuration for this specific pepper model is provided in the folder `move_base_configuration`, where the launchfile `move_base.launch` instanciates move_base with the required parameters.
+[move_base](http://wiki.ros.org/move_base) generates a path based on the location of the robot on the map and a goal on the map. Configuring move base requires a lot of parameters, which is not practial to maintain in one command (configuration explained [here](http://wiki.ros.org/navigation/Tutorials/RobotSetup)). As such, the configuration for this specific pepper model is provided in the folder `move_base_configuration`, where the launchfile `move_base.launch` instanciates move_base with the required parameters.
 
 Specifically for this simulated pepper model we remap the velocity stream, which is produced by move_base to travel from the location to the goal, from the default topic (`cmd_vel`) to `/pepper/cmd_vel`. The rest of the configuration essentially makes sure that the costmaps (local for obstacle avoidance and global for path planning) get the required laser sensor data from the pepper model. 
 
