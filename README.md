@@ -84,24 +84,22 @@ After adding multiple topics, you should have something similar to this:
 
 
 ## Gmapping
+[Gmapping](http://wiki.ros.org/gmapping) provides a laser-based SLAM implementation that we use to map an environment for later navigation.
 
-Map update is still very slow, not sure why the `map_update_interval` param isn't doing anything. Also not sue why the `_` underscore must be inserted before the parameter. But this solves the error we get otherwise: https://answers.ros.org/question/272752/how-to-pass-a-parameter-of-type-double-as-an-input-to-a-roscpp-node/
-
+I had to pass the private parameter `_map_update_interval` with a value of 1 in combination with `_temportalUpdate:=1`, which forces gmapping to update the map with whatever data is available at that time on a 1 second frequency. Without this, the map would only update very rarely in RVIZ. We have to pass the parameters name with a leading underscore, altough this is not implicitly documentend (because they are private).
 To map a virtual environment:
 
 1. Start simulation:`roslaunch pepper_gazebo_plugin pepper_gazebo_plugin_in_office_CPU.launch`
 2. Start gmapping: `rosrun gmapping slam_gmapping base_frame:=base_footprint odom_frame:=odom map_frame:=map _map_update_interval:=1.0 scan:=/pepper/laser_2 _temporalUpdate:=1`
-
-What fixes the slow update of the map in RVIz is the combination of the parameters `_temportalUpdate:=1` and `_map_update_interval:=1.0`!!! This forces gmapping to update the map if the last updates is older than one second. I don't know why it updates so rarely when this parameter is left on default (-1). 
-
 3. Visualize in Rviz: `rosrun rviz rviz` Then `Add` --> `by topic` --> `/map`
 
 This should give you something like this:
 
 ![](imgs/gmapping.png)
 
-3. Save map: `rosrun map_server map_saver -f pepper_office_map`
-4. Export map out of container (or persist it by commiting the current container state): `sudo docker cp <CONTAINER-ID>:/pepper_office_map.pgm .`
+4. Drive arround in environment to build up map, with rqt_steering: `rosrun rqt_robot_steering rqt_robot_steering --default_topic:=/pepper/cmd_vel`
+5. Save map once your happy with it: `rosrun map_server map_saver -f pepper_office_map`
+6. Export map out of container (or persist it by commiting the current container state): `sudo docker cp <CONTAINER-ID>:/pepper_office_map.pgm . && sudo docker cp <CONTAINER-ID>:/pepper_office_map.yaml .`
 
 
 ## AMCL Localization
