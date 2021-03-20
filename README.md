@@ -33,18 +33,24 @@ Simply build a container from the provided Dockerfile. Thus, if you don't have i
 2. CD into repo: `cd pepper_virtual`
 3. Build image from provided Dockerfile: `sudo docker build -t awesome-pepper-sim .`
 
-That's it. You can now start Docker containers based on the image and run the simulation, see [Running the simulation](#runnign-the-simulation)
+Alternatively, you can pull the built container from [dockerhub](https://hub.docker.com/repository/docker/frietz58/pepper-ros-simulation-navigation/general): `sudo docker pull frietz58/pepper-ros-simulation-navigation`
+
+Depeding on whether you build the image yourself or pulled it from dockerhub, you refer to it either by `awesome-pepper-sim` (build locally) or `frietz58/pepper-ros-simulation-navigation` (pulled from dockerhub). Make sure to adapt the commands below, because there I always use `awesome-pepper-sim`...
+
+That's it. You can now start Docker containers based on the image and run the simulation, see [Running the simulation](#running-the-simulation)
 
 
 
 ## Running the simulation
 
-Because we want to spawn GUIs from our containers, we need to allow Docker to open GUIs on the surrounding OS. Thus, before starting the container, run: `xhost +local:root`. More on this [here](https://riptutorial.com/docker/example/21831/running-gui-apps-in-a-linux-container). Alternatively  you can consider installing the Docker extension [rocker](https://github.com/osrf/rocker), which takes care of this problem and similar other ones.
+Because we want to spawn GUIs from our containers, we need to allow Docker to open GUIs on the surrounding OS. Thus, before starting the container, run: `xhost +local:root`. More on this [here](https://riptutorial.com/docker/example/21831/running-gui-apps-in-a-linux-container). Alternatively  you can consider installing the Docker extension [rocker](https://github.com/osrf/rocker), which takes care of this problem and similar other ones. Although installing rocker is a more than one command, I recommend this options, because it is more stable and fixes more than this one issue (see section [rviz](#rviz)).
 
-1. Start a container from the image: `sudo docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY awesome-pepper-sim`
+1. a) If you've opted for the `xhost +local:root` way, run: `sudo docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY awesome-pepper-sim`
+1. b) If you've opted for rocker, run: `sudo rocker --nvidia --x11 awesome-pepper-sim`
 
-   Note, that you would have to source the `ros_entrypoint.sh` as well as the `catkin_ws` at this point. However, because we adjust the `.bashrc` of the image in the Dockerfile, this happens automatically (see `/root/.bashrc` in the container at the very bottom)... 
-3. Start Gazebo simulation: `roslaunch pepper_gazebo_plugin pepper_gazebo_plugin_in_office_CPU.launch`
+   Note that in the container, you would have to source the `ros_entrypoint.sh` as well as the `catkin_ws` at this point. However, because we adjust the `.bashrc` of the image in the Dockerfile, this happens automatically (see `/root/.bashrc` in the container at the very bottom)... 
+
+2. Start Gazebo simulation: `roslaunch pepper_gazebo_plugin pepper_gazebo_plugin_in_office_CPU.launch`
 
 This should give you something similar to this:
 
