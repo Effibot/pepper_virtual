@@ -16,23 +16,19 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBIAN_FRONTEND teletype
 RUN yes | apt-get install ros-kinetic-pepper-meshes
 
-# add the catkin ws from this folder in the container
-# ADD syntax: <host-path> <container-path>
-ADD ./catkin_ws /catkin_ws
-RUN cd /catkin_ws/
-RUN git clone -b correct_chain_model_and_gazebo_enabled https://github.com/awesomebytes/pepper_robot
-RUN git clone -b simulation_that_works https://github.com/awesomebytes/pepper_virtual
-RUN git clone https://github.com/awesomebytes/gazebo_model_velocity_plugin
-RUN cd ..
+# clone the required repos into a catkin workspace
+RUN git clone -b correct_chain_model_and_gazebo_enabled https://github.com/awesomebytes/pepper_robot /catkin_ws/src/pepper_robot
+RUN git clone -b simulation_that_works https://github.com/awesomebytes/pepper_virtual /catkin_ws/src/pepper_virtual
+RUN git clone https://github.com/awesomebytes/gazebo_model_velocity_plugin /catkin_ws/src/gazebo_model_velociy_plugin
+
+# build the catkin_ws inside the container
+RUN /bin/bash -c '. /opt/ros/kinetic/setup.bash && cd /catkin_ws && catkin_make'
 
 # add the saved maps folder from the physical directory to the workspac
 ADD ./saved_maps /saved_maps
 
 # add move_base config
 ADD ./move_base_configuration /move_base_configuration
-
-# build the catkin_ws inside the container
-RUN /bin/bash -c '. /opt/ros/kinetic/setup.bash && cd /catkin_ws && catkin_make'
 
 # we add these two commands to the bashrc in the container, so that the entrypoint and workspacea will be sourced,
 # whenever a new bash session is instantiated in the container
