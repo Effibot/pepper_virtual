@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from math import atan2, cos, radians, sin, sqrt, degrees, isnan
 
 import rospy
@@ -447,7 +447,7 @@ class LaserPublisher(object):
             y = dist * sin(idx * angle_increment + min_angle)
             print(" [ px, py, are the correct points ] ")
             print("dist, px, py: " + str(dist) +
-                  " " + str(p[0])) + " " + str(p[1])
+                  " " + str(p[0]) + " " + str(p[1])) 
             print("dist, x, y:   " + str(dist) + " " + str(x) + " " + str(y))
 
             dist_from_rereproj = self.get_dist(x, y)
@@ -463,7 +463,7 @@ class LaserPublisher(object):
             expected_angle = idx * self.angle_increment + min_angle
             if not isnan(angle):
                 tmp_angle = angle - min_angle
-                print("tmp_angle: " + str(degrees(tmp_angle))) + " deg"
+                print("tmp_angle: " + str(degrees(tmp_angle))+ " deg") 
                 print("angle_increment: " + str(degrees(angle_increment)))
                 closest_index = int(tmp_angle / angle_increment)
                 print("closest index: " + str(closest_index))
